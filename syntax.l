@@ -27,6 +27,7 @@ a       {
           std::cout << "The text of the matched string is available in yytext: " << yytext << std::endl;
           std::cout << "The length of the matched string is available in yyleng: " << yyleng << std::endl;
           std::cout << "The matched string appeared on this source code line (yylineno): " << yylineno << std::endl;
+
         }
 
 cat     {
@@ -34,6 +35,8 @@ cat     {
            * This rule recognizes the concatenation of 'c', 'a', and 't',
            * i.e. the string "cat".
            */
+
+           REJECT;
         }
 
 cat|dog {
@@ -41,6 +44,7 @@ cat|dog {
            * This rule recognizes the union of "cat" and "dog", i.e. either
            * "cat" or "dog".
            */
+           REJECT;
         }
 
 ca*t    {
@@ -54,6 +58,7 @@ ca*t    {
            * caaaaaat
            * caaaaaaaaaaaaaaaaaaaaaat
            */
+          yyterminate();
         }
 
 ca+t    {
@@ -156,4 +161,28 @@ c(a|u)*t  {
                        */
                     }
 
+^cat            {
+
+}
+
+cat$            {
+
+}
+
+"c.t"       {
+
+}
+
+.     {
+        std::cerr << "Error: invalid token: " << yytext << std::endl;
+      }
+
+<<EOF>>   {
+
+}
+
 %%
+
+int main() {
+  yylex();
+}
